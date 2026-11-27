@@ -12,7 +12,7 @@ export type TimerConfig = {
   cycles: number;
   /** Repos entre deux cycles (peut être égal à restSec). */
   cycleRestSec: number;
-  /** Alerte « fin proche » N secondes avant la fin d'un round (0 = désactivée). */
+  /** Alerte « fin proche » N secondes avant la fin d'un round (0 = désactivée). Fixée à 10 s dans l'UI. */
   warningSec: number;
 };
 

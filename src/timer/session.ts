@@ -1,4 +1,4 @@
-import { positionAt } from './plan';
+import { buildPlan, positionAt } from './plan';
 import type { Plan } from './types';
 
 /**
@@ -60,4 +60,15 @@ export function previousPhase(s: Session, now: number): Session {
   if (!current) return s;
   if (e - current.startMs > BACK_THRESHOLD_MS || index === 0) return seek(s, now, current.startMs);
   return seek(s, now, s.plan.phases[index - 1].startMs);
+}
+
+/**
+ * Ajoute un cycle à la séance en cours (y compris depuis l'écran de fin).
+ * Les phases déjà prévues ne bougent pas : on insère un repos de cycle puis un cycle complet à la fin.
+ */
+export function addCycle(s: Session, now: number): Session {
+  const plan = buildPlan({ ...s.plan.config, cycles: s.plan.config.cycles + 1 });
+  // On fige le temps écoulé (borné à l'ancienne fin) pour ne pas sauter dans le repos ajouté.
+  const accumulatedMs = elapsedMs(s, now);
+  return { plan, accumulatedMs, runningSince: s.runningSince === null ? null : now };
 }

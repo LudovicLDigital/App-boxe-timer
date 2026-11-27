@@ -1,6 +1,7 @@
-import { describe, expect, it } from '@jest/globals';
+import { describe, expect, it } from 'vitest';
 
 import {
+  addCycle,
   buildPlan,
   cuesBetween,
   DEFAULT_CONFIG,
@@ -146,6 +147,25 @@ describe('session', () => {
     // juste au début du round 1 → retour à la préparation
     s = previousPhase(s, 30_500);
     expect(elapsedMs(s, 30_500)).toBe(0);
+  });
+
+  it('ajoute un cycle sans décaler le temps écoulé', () => {
+    const s = startSession(plan, 0);
+    const next = addCycle(s, 50_000);
+    expect(next.plan.config.cycles).toBe(3);
+    expect(elapsedMs(next, 50_000)).toBe(50_000);
+    expect(next.plan.phases.slice(0, plan.phases.length - 0).map((p) => p.startMs)).toEqual(
+      plan.phases.map((p) => p.startMs),
+    );
+    expect(next.plan.phases[plan.phases.length].kind).toBe('cycleRest');
+  });
+
+  it('reprend sur le repos de cycle quand on ajoute un cycle après la fin', () => {
+    const s = startSession(plan, 0);
+    const later = plan.totalMs + 30_000;
+    const next = addCycle(s, later);
+    expect(elapsedMs(next, later)).toBe(plan.totalMs);
+    expect(positionAt(next.plan, elapsedMs(next, later)).phase?.kind).toBe('cycleRest');
   });
 
   it('ne dépasse jamais la fin', () => {
