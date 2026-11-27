@@ -1,5 +1,21 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+
+import { colors } from '@/theme/colors';
 
 export default function RootLayout() {
-  return <Stack />;
+  return (
+    <>
+      <StatusBar style="light" />
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: colors.background },
+          headerTintColor: colors.text,
+          contentStyle: { backgroundColor: colors.background },
+        }}>
+        <Stack.Screen name="index" options={{ title: 'Boxe Timer' }} />
+        <Stack.Screen name="session" options={{ headerShown: false, gestureEnabled: false }} />
+      </Stack>
+    </>
+  );
 }

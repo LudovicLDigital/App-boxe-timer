@@ -23,4 +23,15 @@ Scanne le QR code avec l'app **Expo Go** sur ton iPhone.
 ```bash
 npx tsc --noEmit
 npx expo lint
+npm test
 ```
+
+## Organisation du code
+
+- `src/timer/` : moteur du timer, en TypeScript pur, sans dépendance à React Native, et testé.
+  - `plan.ts` : transforme une config en une liste de phases (préparation, round, repos, repos de cycle).
+  - `session.ts` : pause, reprise, phase suivante et précédente. Le temps est calculé depuis `Date.now()`, pas en comptant des ticks, donc il ne dérive pas et reste juste après un passage en arrière-plan.
+  - `cues.ts` : signaux à déclencher entre deux instants (début de phase, alerte de fin de round, décompte 3-2-1, fin).
+- `src/hooks/use-session.ts` : relie le moteur à React (tick toutes les 100 ms, émission des signaux).
+- `src/app/index.tsx` : écran de réglages.
+- `src/app/session.tsx` : écran de séance (plein écran coloré par phase, écran maintenu allumé).
