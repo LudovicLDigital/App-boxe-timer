@@ -1,0 +1,155 @@
+:root {
+  --bg: #0b0b0f;
+  --surface: #1a1a22;
+  --border: #2a2a35;
+  --text: #fff;
+  --dim: #9a9aa8;
+  --accent: #e53935;
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation; /* pas de zoom au double-tap */
+}
+button:disabled { opacity: 0.3; cursor: default; }
+button:active:not(:disabled) { opacity: 0.7; }
+
+/* ---------- Réglages ---------- */
+
+.config {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: env(safe-area-inset-top);
+}
+.config-header h1 { margin: 0; padding: 16px 20px 4px; font-size: 28px; font-weight: 800; }
+.config-body { flex: 1; overflow-y: auto; padding: 8px 20px 24px; -webkit-overflow-scrolling: touch; }
+.config-body h2 {
+  color: var(--dim);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 24px 0 4px;
+}
+
+.presets { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0; margin: 0 -20px; padding-inline: 20px; scrollbar-width: none; }
+.preset {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  max-width: 170px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 2px solid transparent;
+  text-align: left;
+}
+.preset strong { font-size: 16px; }
+.preset span { font-size: 13px; color: var(--dim); }
+.preset.active { border-color: var(--accent); }
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.stepper-label { font-size: 17px; }
+.stepper-controls { display: flex; align-items: center; gap: 12px; }
+.stepper-controls button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+}
+.stepper-value { min-width: 64px; text-align: center; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.config-footer {
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.total { margin: 0; text-align: center; color: var(--dim); font-size: 15px; }
+.total strong { color: var(--text); }
+.start {
+  background: var(--accent);
+  border-radius: 16px;
+  padding: 20px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+/* ---------- Séance ---------- */
+
+.session {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: env(safe-area-inset-top) 20px calc(8px + env(safe-area-inset-bottom));
+  transition: background-color 0.3s;
+}
+.session-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.phase-label { font-size: clamp(32px, 10vw, 48px); font-weight: 900; letter-spacing: 3px; }
+.sub-label { font-size: clamp(18px, 5.5vw, 24px); font-weight: 600; opacity: 0.85; margin-top: 8px; }
+.clock {
+  font-size: min(38vw, 32vh);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin: 12px 0;
+  letter-spacing: -0.02em;
+}
+.clock.warning { animation: pulse 1s steps(1) infinite; }
+@keyframes pulse { 50% { opacity: 0.55; } }
+.paused { font-size: 20px; font-weight: 800; letter-spacing: 2px; }
+.next { font-size: 18px; opacity: 0.75; margin-top: 8px; }
+
+.session-controls, .session-actions { display: flex; align-items: center; gap: 16px; }
+.session-actions { flex-direction: column; align-items: stretch; gap: 12px; padding-bottom: 16px; }
+.big {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 20px;
+  padding: 24px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.round-btn {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  font-size: 28px;
+}
+.session-footer { display: flex; justify-content: space-between; }
+.link { background: none; padding: 18px 8px; font-size: 17px; font-weight: 600; opacity: 0.85; }
