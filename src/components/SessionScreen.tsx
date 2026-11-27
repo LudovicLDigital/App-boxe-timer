@@ -28,7 +28,7 @@ export function SessionScreen({ config: initialConfig, onExit }: Props) {
     return () => document.removeEventListener('visibilitychange', onVisible);
   }, []);
 
-  // Le bouton « Arrêter » repasse en état normal au bout de 3 s sans confirmation.
+  // Le bouton « Quitter » repasse en état normal au bout de 3 s sans confirmation.
   useEffect(() => {
     if (!confirmStop) return;
     const id = setTimeout(() => setConfirmStop(false), 3000);
@@ -73,6 +73,18 @@ export function SessionScreen({ config: initialConfig, onExit }: Props) {
 
   return (
     <div className="session" style={{ background }}>
+      <div className="session-top">
+        <button
+          type="button"
+          className={`pill ${confirmStop ? 'confirm' : ''}`}
+          onClick={() => (confirmStop ? onExit() : setConfirmStop(true))}>
+          {confirmStop ? 'Confirmer : quitter' : '✕ Quitter'}
+        </button>
+        <button type="button" className="pill" onClick={addCycle}>
+          +1 cycle
+        </button>
+      </div>
+
       <div className="session-center">
         <div className="phase-label">{phaseLabels[phase.kind]}</div>
         <div className="sub-label">{roundInfo}</div>
@@ -97,14 +109,6 @@ export function SessionScreen({ config: initialConfig, onExit }: Props) {
         </button>
       </div>
 
-      <div className="session-footer">
-        <button type="button" className="link" onClick={() => (confirmStop ? onExit() : setConfirmStop(true))}>
-          {confirmStop ? 'Toucher encore pour arrêter' : 'Arrêter'}
-        </button>
-        <button type="button" className="link" onClick={addCycle}>
-          +1 cycle
-        </button>
-      </div>
     </div>
   );
 }
